@@ -59,7 +59,7 @@ const FileUpload = () => {
   };
 
   return (
-    <div>
+    <div className="fileupload">
       <input
         ref={inputRef}
         type="file"
