@@ -1,14 +1,17 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState} from "react";
+import { useNavigate } from "react-router-dom";
 import "./FileUpload.css";
 import axios from "axios";
 import clapperboard_icon from '../../assets/clapperboard1.png'
 
 const FileUpload = () => {
   const inputRef = useRef();
+  const navigate = useNavigate();
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const [uploadStatus, setUploadStatus] = useState("select");
+  const [blob, setBlob] = useState(null);
 
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -30,6 +33,7 @@ const FileUpload = () => {
   const handleUpload = async () => {
     if (uploadStatus === "done") {
       clearFileInput();
+      navigate('/downloadpage', {state: {videoBlob : blob}});
       return;
     }
 
@@ -41,9 +45,10 @@ const FileUpload = () => {
 
       // send video to server
       const response = await axios.post(
-        "http://localhost:8000/video",
+        "http://192.168.142.1:8000/video",
         formData,
         {
+          responseType: 'blob',
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -54,9 +59,15 @@ const FileUpload = () => {
           },
         }
       );
+      
+      console.log("getting video");
 
+      setBlob(response.data);
+      
+      console.log("done");
       setUploadStatus("done");
     } catch (error) {
+      console.log(error);
       setUploadStatus("select");
     }
   };
