@@ -1,8 +1,34 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import './NewDownloadPage.css';
 
 const NewDownloadPage = () => {
   const videoRef = useRef(null);
+  const [videoSrc, setVideoSrc] = useState(null);
+
+  useEffect(() => {
+    const fetchVideo = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/test");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const blob = await response.blob();
+        const videoUrl = URL.createObjectURL(blob);
+        setVideoSrc(videoUrl);
+      } catch (error) {
+        console.error("There was a problem fetching the video:", error);
+      }
+    };
+
+    fetchVideo();
+
+    return () => {
+      // Revoke the object URL when the component is unmounted
+      if (videoSrc) {
+        URL.revokeObjectURL(videoSrc);
+      }
+    };
+  }, []);
 
   const handleStartVideo = () => {
     if (videoRef.current) {
@@ -19,10 +45,9 @@ const NewDownloadPage = () => {
 
   const handleDownloadVideo = () => {
     // Replace 'video.mp4' with the actual video file URL
-    const videoUrl = 'video.mp4';
     const a = document.createElement('a');
-    a.href = videoUrl;
-    a.download = 'video.mp4';
+    a.href = videoSrc;
+    a.download = 'final_video.mp4';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -30,7 +55,7 @@ const NewDownloadPage = () => {
 
   const handleCompareVideo = () => {
     // Redirect to another webpage
-    window.location.href = 'https://google.com';
+    window.location.href = '/compare';
   };
 
   return (
@@ -38,9 +63,8 @@ const NewDownloadPage = () => {
       <div className="video-container">
         <div className="video-title">Enhanced Video</div>
         <div className="video-wrapper">
-          {/* <div className="video-title">Video Player</div> */}
-          <video ref={videoRef} controls width="1024" height="576">
-            <source src="public/test1.mp4" type="video/mp4" />
+          <video ref={videoRef} controls width="1024" height="576" muted="muted">
+            <source src={videoSrc} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
@@ -50,7 +74,6 @@ const NewDownloadPage = () => {
         <button className="compare-btn" onClick={handleDownloadVideo}>Download</button>
         <button className="compare-btn" onClick={handleCompareVideo}>Compare</button>
         <button className="compare-btn" onClick={handleResetVideo}>Reset Video</button>
-
       </div>
     </div>
   );

@@ -11,23 +11,25 @@ import NewDownloadPage from './Components/NewDownloadPage/NewDownloadPage'
 const App = () => {
   return (
     <div>
-      {/* <Router>
+      <Router>
         <Routes>
         <Route path='/' element={<><Navbar/><Hero/></>}></Route>
         <Route path='/login' element={<LoginSignup/>}></Route>
         <Route path='/fileupload' element={<FileUpload/>}></Route>
-        <Route path='/downloadpage' element={<DownloadPage/>}></Route>
+        {/* <Route path='/downloadpage' element={<DownloadPage/>}></Route> */}
+        <Route path='/compare' element={<ComparisonPage/>}></Route>
+        <Route path='/downloadpage' element={<NewDownloadPage/>}></Route>
         
         </Routes>
       
-      </Router> */}
+      </Router>
 
       {/* <Navbar/> */}
       {/* <Hero/> */}
       {/* <LoginSignup/> */}
       {/* <FileUpload/> */}
       {/* <ComparisonPage/> */}
-      <NewDownloadPage/>
+      {/* <NewDownloadPage/> */}
       {/* <DownloadPage/> */}
       
     </div>

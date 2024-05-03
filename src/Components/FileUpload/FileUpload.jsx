@@ -8,6 +8,8 @@ const FileUpload = () => {
   const inputRef = useRef();
   const navigate = useNavigate();
 
+  const backendUrl = "http://localhost:8000";
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const [uploadStatus, setUploadStatus] = useState("select");
@@ -45,7 +47,7 @@ const FileUpload = () => {
 
       // send video to server
       const response = await axios.post(
-        "http://192.168.142.1:8000/video",
+        `${backendUrl}/video`,
         formData,
         {
           responseType: 'blob',
