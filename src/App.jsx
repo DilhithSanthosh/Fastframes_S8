@@ -6,6 +6,7 @@ import FileUpload from './Components/FileUpload/FileUpload'
 import LoginSignup from './Components/LoginSignup/LoginSignup'
 import DownloadPage from './Components/downloadpage/Downloadpage'
 import ComparisonPage from './Components/ComparisonPage/ComparisonPage'
+import NewDownloadPage from './Components/NewDownloadPage/NewDownloadPage'
 
 const App = () => {
   return (
@@ -25,7 +26,8 @@ const App = () => {
       {/* <Hero/> */}
       {/* <LoginSignup/> */}
       {/* <FileUpload/> */}
-      <ComparisonPage/>
+      {/* <ComparisonPage/> */}
+      <NewDownloadPage/>
       {/* <DownloadPage/> */}
       
     </div>
