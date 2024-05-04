@@ -1,5 +1,6 @@
 import React from 'react';
 import './ComparisonPage.css';
+// import './CompareTest.css';
 import { useRef } from 'react';
 
 const ComparisonPage = () => {
@@ -28,15 +29,15 @@ const ComparisonPage = () => {
       <div className="video-container">
         <div className="video-wrapper">
           <div className="video-title">ORIGINAL VIDEO</div>
-          <video ref={video1Ref} controls width="720" height="540">
-            <source src="public/test1.mp4" type="video/mp4" />
+          <video ref={video1Ref} controls width="800" height="600">
+            <source src="/test1.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
         <div className="video-wrapper">
           <div className="video-title">ENHANCED VIDEO</div>
-          <video ref={video2Ref} controls width="720" height="540">
-            <source src="public/test2.mp4" type="video/mp4" />
+          <video ref={video2Ref} controls width="800" height="600">
+            <source src="/test2.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
