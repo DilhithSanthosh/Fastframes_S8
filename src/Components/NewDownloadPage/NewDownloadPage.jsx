@@ -59,21 +59,21 @@ const NewDownloadPage = () => {
   };
 
   return (
-    <div className="video-page-container">
-      <div className="video-container">
-        <div className="video-title">Enhanced Video</div>
-        <div className="video-wrapper">
+    <div className="video-page-container-DownloadPage">
+      <div className="video-container-DownloadPage">
+        <div className="video-title-DownloadPage">Enhanced Video</div>
+        <div className="video-wrapper-DownloadPage">
           <video ref={videoRef} controls width="1024" height="576" muted="muted">
             <source src={videoSrc} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
       </div>
-      <div className="button-container">
-        <button className="compare-btn" onClick={handleStartVideo}>Start Video</button>
-        <button className="compare-btn" onClick={handleDownloadVideo}>Download</button>
-        <button className="compare-btn" onClick={handleCompareVideo}>Compare</button>
-        <button className="compare-btn" onClick={handleResetVideo}>Reset Video</button>
+      <div className="button-container-DownloadPage">
+        <button className="compare-btn-DownloadPage" onClick={handleStartVideo}>Start Video</button>
+        <button className="compare-btn-DownloadPage" onClick={handleDownloadVideo}>Download</button>
+        <button className="compare-btn-DownloadPage" onClick={handleCompareVideo}>Compare</button>
+        <button className="compare-btn-DownloadPage" onClick={handleResetVideo}>Reset Video</button>
       </div>
     </div>
   );
