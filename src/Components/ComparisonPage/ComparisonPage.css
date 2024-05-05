@@ -12,6 +12,8 @@
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 40px;
+    /* below added when the titles where going out of the screen in up */
+    margin-top: 40px;
     
   }
   
@@ -31,7 +33,8 @@
     position: absolute;
     
     /* prev top was 15px but -43px was having precedence dont knwo why temp soln below */
-    top: -20px !important;
+    /* before top was -20px changed caude added margin top in wraaper above and it was going out of viewport */
+    top: -5px !important;
     left: 50%;
     transform: translateX(-50%);
     background-color: rgba(0, 0, 0, 0.7);
