@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './ComparisonPage.css';
 // import './CompareTest.css';
-import { useRef } from 'react';
+import { useRef, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../../AppContext';
+
 
 const ComparisonPage = () => {
-    const video1Ref = useRef(null);
+  const video1Ref = useRef(null);
   const video2Ref = useRef(null);
+  const navigate = useNavigate();
+  const [video1, setVideo1] = useState(null);
+  const [video2, setVideo2] = useState(null);
+  const { user } = useContext(AppContext);
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+    }
+  }, [user]);
+
 
   const handleStartVideos = () => {
     if (video1Ref.current && video2Ref.current) {
@@ -29,28 +43,30 @@ const ComparisonPage = () => {
       <div className="video-container">
         <div className="video-wrapper">
           <div className="video-title">ORIGINAL VIDEO</div>
-          <video ref={video1Ref} controls width="800" height="600">
-            <source src="/test1.mp4" type="video/mp4" />
+          {(video1 === null) ? <input type="file" onChange={(e) => setVideo1(URL.createObjectURL(e.target.files[0]))} /> : null}
+          <video ref={video1Ref} controls width="850" height="640">
+            <source src={video1} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
         <div className="video-wrapper">
+          {(video2 === null) ? <input type="file" onChange={(e) => setVideo2(URL.createObjectURL(e.target.files[0]))} /> : null}
           <div className="video-title">ENHANCED VIDEO</div>
-          <video ref={video2Ref} controls width="800" height="600">
-            <source src="/test2.mp4" type="video/mp4" />
+          <video ref={video2Ref} controls width="850" height="640">
+            <source src={video2} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
       </div>
       <div className="button-container">
-        <button className= "compare-btn" onClick={handleStartVideos}>Start Videos</button>
-        <button className= "compare-btn" onClick={handleDownload}>Download</button>
-        <button className= "compare-btn" onClick={handleResetVideos}>Reset Videos</button>
-        
+        <button className="compare-btn" onClick={handleStartVideos}>Start Videos</button>
+        <button className="compare-btn" onClick={handleDownload}>Download</button>
+        <button className="compare-btn" onClick={handleResetVideos}>Reset Videos</button>
+
       </div>
-      
+
     </div>
-    
+
   );
 };
 

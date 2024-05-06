@@ -1,27 +1,35 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Navbar.css'
 import logo from '../../assets/FF_NEW1.png'
 import { Link } from 'react-router-dom'
+import { AppContext } from '../../AppContext'
+import { logout, successToast, errorToast } from '../../Firebase/functions'
+
+const handleSignOut = () => { // handle logout
+  logout().then((response) => {
+    if (response) {
+      successToast("User logged out successfully.");
+    } else {
+      errorToast("An error occurred. Please try again.");
+    }
+  });
+}
 
 const Navbar = () => {
+  const { user } = useContext(AppContext);
   return (
     <nav className='container-navbar'>
-            {/* <a href="index.html"><img src={logo} alt="fastframeslogo"/></a> */}
-            <Link to='/'><img src={logo} alt="fastframeslogo"/></Link>
+      {/* <a href="index.html"><img src={logo} alt="fastframeslogo"/></a> */}
+      <Link to='/'><img src={logo} alt="fastframeslogo" /></Link>
 
-            <div className="nav-links">
-                <ul className="nav-links-ul">
-                    {/* <Link to='login'>Sign In</Link> */}
-                    {/* <li><a href="">HOME</a></li>
-                    <li><a href="">ABOUT US</a></li>
-                    <li><a href="">INSTRUCTIONS</a></li>
-                    <li><a href="">CONTACT</a></li> */}
-                    <li><a href="">HOME</a></li>
-                    <li><Link to='aboutus'>ABOUT US</Link></li>
-                    <li><a href="">INSTRUCTIONS</a></li>
-                    <li><Link to='login'>SIGN IN</Link></li>
-                </ul>
-            </div>
+      <div className="nav-links">
+        <ul className="nav-links-ul">
+          <li><a href="">HOME</a></li>
+          <li><Link to='aboutus'>ABOUT US</Link></li>
+          <li><a href="">INSTRUCTIONS</a></li>
+          {(user) ? <li onClick={handleSignOut} >LOG OUT</li> : <li><Link to='login'>SIGN IN</Link></li>}
+        </ul>
+      </div>
     </nav>
   )
 }
