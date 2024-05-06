@@ -7,6 +7,7 @@ import LoginSignup from './Components/LoginSignup/LoginSignup'
 import DownloadPage from './Components/downloadpage/Downloadpage'
 import ComparisonPage from './Components/ComparisonPage/ComparisonPage'
 import NewDownloadPage from './Components/NewDownloadPage/NewDownloadPage'
+import AboutUs from './Components/AboutUs/AboutUs'
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         {/* <Route path='/downloadpage' element={<DownloadPage/>}></Route> */}
         <Route path='/compare' element={<ComparisonPage/>}></Route>
         <Route path='/downloadpage' element={<NewDownloadPage/>}></Route>
+        <Route path='/aboutus' element={<AboutUs/>}></Route>
         
         </Routes>
       

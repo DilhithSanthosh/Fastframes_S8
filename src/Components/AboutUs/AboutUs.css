@@ -1,0 +1,22 @@
+.containerAboutUs {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-top: 60px;
+  }
+  
+  .headingAboutUs {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: aliceblue;
+    
+    
+  }
+  
+  .textAboutUs {
+    font-size: 19px;
+    line-height: 1.5;
+    color: rgba(215, 224, 232, 0.922);
+  }
+  
