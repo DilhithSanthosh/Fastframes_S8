@@ -1,0 +1,49 @@
+.vertical-card-app {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .vertical-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+  }
+  
+  .title-verticalcard {
+    flex: 2;
+    margin-right: 10px;
+  }
+  
+  .status-verticalcard {
+    flex: 1;
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  
+  .uploaded {
+    color: green;
+  }
+  
+  .processing {
+    color: orange;
+  }
+  
+  .play-btn-verticalcard,
+  .download-btn-verticalcard {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .play-btn-verticalcard:hover,
+  .download-btn-verticalcard:hover {
+    background-color: #0056b3;
+  }
+  

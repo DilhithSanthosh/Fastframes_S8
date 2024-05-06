@@ -13,6 +13,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import AboutUs from './Components/AboutUs/AboutUs'
+import VerticalCardApp from './Components/VerticalCardApp/VerticalCardApp'
 
 const App = () => {
 
@@ -35,6 +36,7 @@ const App = () => {
             <Route path='/compare' element={<ComparisonPage />}></Route>
             <Route path='/downloadpage' element={<NewDownloadPage />}></Route>
             <Route path='/aboutus' element={<AboutUs />}></Route>
+        <Route path='/verticalcard' element={<VerticalCardApp/>}></Route>
 
           </Routes>
 
