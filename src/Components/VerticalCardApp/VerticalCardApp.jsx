@@ -29,7 +29,7 @@ function VerticalCardApp() {
 
   return (
     <div className="vertical-card-app">
-      <h1>Video Upload Status</h1>
+      <h1 className="vertical-card-app-title">Video Upload Status</h1>
       {videoData.map(video => (
         <VerticalCard key={video.id} videoTitle={video.videoTitle} videoStatus={video.videoStatus} />
       ))}
