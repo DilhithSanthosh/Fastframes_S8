@@ -6,6 +6,9 @@ import clapperboard_icon from '../../assets/clapperboard1.png';
 import { generateVerificationToken, successToast, errorToast } from "../../Firebase/functions";
 import { AppContext } from "../../AppContext";
 
+import logo from '../../assets/FF_NEW1.png'
+import { Link } from 'react-router-dom'
+
 const FileUpload = () => {
   const inputRef = useRef();
   const navigate = useNavigate();
@@ -124,6 +127,7 @@ const FileUpload = () => {
   return (
     <>
       <div className="fileupload">
+      <Link to='/'><img className="fastframe-home-fileupload" src={logo} alt="fastframeslogo" /></Link>
         <input
           ref={inputRef}
           type="file"
