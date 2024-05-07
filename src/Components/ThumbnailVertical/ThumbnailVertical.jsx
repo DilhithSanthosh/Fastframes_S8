@@ -4,6 +4,9 @@ import { AppContext } from '../../AppContext';
 import { useNavigate } from 'react-router-dom';
 import { retrieveVideos } from '../../Firebase/functions';
 
+import logo from '../../assets/FF_NEW1.png'
+import { Link } from 'react-router-dom'
+
 const VerticalCard = ({ videoTitle, videoStatus, videoURL }) => {
   const playVideo = () => {
     // Add logic here to play the video
@@ -30,6 +33,8 @@ const VerticalCard = ({ videoTitle, videoStatus, videoURL }) => {
 
 const loadingScreen = () => {
   return <div>
+    
+    <img className="fastframe-home" src={logo} alt="fastframeslogo" />
     <h1>Loading...</h1>
   </div>
 }

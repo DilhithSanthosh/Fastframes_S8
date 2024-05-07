@@ -107,3 +107,14 @@
     transition: 1s;
   }
   
+  .fastframe-home{
+    /* position: absolute;
+        top: 0;
+        left: 0; */
+        width: 200px; /* Adjust width and height as needed */
+        /* height: 100px; */
+        z-index: 1; /* Ensure the image appears above other content if needed */
+        margin-top: 8px;
+        /* margin-left: 20px; */
+   }
+   
