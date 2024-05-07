@@ -2,7 +2,8 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./FileUpload.css";
 import axios from "axios";
-import clapperboard_icon from '../../assets/clapperboard1.png'
+import clapperboard_icon from '../../assets/clapperboard1.png';
+import { generateVerificationToken, successToast, errorToast } from "../../Firebase/functions";
 
 const FileUpload = () => {
   const inputRef = useRef();
@@ -13,7 +14,8 @@ const FileUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const [uploadStatus, setUploadStatus] = useState("select");
-  const [blob, setBlob] = useState(null);
+  const [originalURL, setOriginalURL] = useState("");
+  const [interpolatedURL, setInterpolatedURL] = useState("");
 
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -35,7 +37,7 @@ const FileUpload = () => {
   const handleUpload = async () => {
     if (uploadStatus === "done") {
       clearFileInput();
-      navigate('/downloadpage', { state: { videoBlob: blob } });
+      navigate('/compare', { state: { originalURL: originalURL, interpolatedURL: originalURL } });
       return;
     }
 
@@ -45,26 +47,56 @@ const FileUpload = () => {
       const formData = new FormData();
       formData.append("file", selectedFile);
 
+      // generate auth token
+      let token = "";
+      try {
+        token = await generateVerificationToken();
+      } catch (error) {
+        errorToast("Failed to generate token");
+        setUploadStatus("select");
+        return;
+      }
+
+
+
       // send video to server
-      const response = await axios.post(
-        `${backendUrl}/video`,
-        formData,
-        {
-          responseType: 'blob',
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          onUploadProgress: (progressEvent) => {
-            setProgress(
-              Math.round((progressEvent.loaded / progressEvent.total) * 100)
-            );
-          },
-        }
-      );
+      let response = null;
+      try {
+        response = await axios.post(
+          `${backendUrl}/video`,
+          formData,
+          {
+            responseType: 'application/json',
+            headers: {
+              "Content-Type": "multipart/form-data",
+              "Authorization": `${token}`,
+            },
+            onUploadProgress: (progressEvent) => {
+              setProgress(
+                Math.round((progressEvent.loaded / progressEvent.total) * 100)
+              );
+            },
+          }
+        );
+        successToast("Video uploaded successfully");
+      } catch (error) {
+        errorToast("Failed to upload video");
+        setUploadStatus("select");
+        return;
+      }
 
-      console.log("getting video");
 
-      setBlob(response.data);
+      // get the video URLs
+      try {
+        console.log(response.data);
+        const { original_video_url, interpolated_video_url } = response.data;
+        setOriginalURL(original_video_url);
+        setInterpolatedURL(interpolated_video_url);
+      } catch (error) {
+        errorToast("Failed to get video URLs");
+        setUploadStatus("select");
+        return;
+      }
 
       console.log("done");
       setUploadStatus("done");
@@ -73,6 +105,7 @@ const FileUpload = () => {
       setUploadStatus("select");
     }
   };
+
 
   return (
     <>

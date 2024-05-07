@@ -106,6 +106,7 @@ export const errorToast = (message) => {
     });
 };
 
+// add data to firestore
 export const addData = (collectionName, data) => {
     return new Promise((resolve, reject) => {
         addDoc(collection(db, collectionName), data)
@@ -115,5 +116,17 @@ export const addData = (collectionName, data) => {
             .catch((error) => {
                 reject(error);
             });
+    });
+}
+
+// generate verification token
+export const generateVerificationToken = async (email) => {
+    return new Promise((resolve, reject) => {
+        auth.currentUser.getIdToken(true).then((idToken) => {
+            resolve(idToken);
+        }
+        ).catch((error) => {
+            reject(error);
+        });
     });
 }
