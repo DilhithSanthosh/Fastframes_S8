@@ -15,6 +15,7 @@ const VerticalCard = ({ videoTitle, videoStatus, videoURL }) => {
 
   return (
     <div className="vertical-card-TV">
+        
       {/* <div className={`title-verticalcard-TV ${videoStatus.toLowerCase()}`}> */}
       <div className="title-verticalcard-TV" >
         <video controls={false} muted className="video-thumbnail-TV">
@@ -80,6 +81,7 @@ function ThumbnailVertical() {
 
   return (
     <div className="vertical-card-app-TV">
+        <Link to='/'><img className="fastframe-home-thumbnailvertical" src={logo} alt="fastframeslogo" /></Link>
       <h1 className="vertical-card-app-title-TV">Video Upload Status</h1>
       {(videoData.length == 0) ? loadingScreen() : videoData.map((video, index) => (
         <VerticalCard key={index} videoTitle={`${video.videoTitle} ${index + 1}`} videoStatus={video.videoStatus} videoURL={video.videoURL} />
