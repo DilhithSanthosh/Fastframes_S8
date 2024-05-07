@@ -6,6 +6,11 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { AppContext } from '../../AppContext';
 
 
+// home button element import statements
+import logo from '../../assets/FF_NEW1.png'
+import { Link } from 'react-router-dom'
+
+
 const ComparisonPage = () => {
   const video1Ref = useRef(null);
   const video2Ref = useRef(null);
@@ -57,6 +62,11 @@ const ComparisonPage = () => {
 
   return (
     <div className="video-page-container">
+
+      {/* added the home button element here */}
+      <Link to='/'><img className="fastframe-home-compare" src={logo} alt="fastframeslogo" /></Link>
+
+
       <div className="video-container">
         <div className="video-wrapper">
           <div className="video-title">ORIGINAL VIDEO</div>

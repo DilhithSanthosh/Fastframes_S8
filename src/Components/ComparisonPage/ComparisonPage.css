@@ -1,3 +1,20 @@
+/* below style is for home button */
+.fastframe-home-compare{
+  position: absolute;
+      top: 0;
+      left: 0;
+      width: 140px; /* Adjust width and height as needed */
+      /* height: 100px; */
+      z-index: 1; /* Ensure the image appears above other content if needed */
+      margin-top: 8px;
+      margin-left: 20px;
+ }
+ 
+
+
+
+
+
 .video-page-container {
   width: 100vw;
   height: 100vh;
