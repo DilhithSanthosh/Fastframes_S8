@@ -133,26 +133,32 @@ export const generateVerificationToken = async (email) => {
 }
 
 // retrieve videos of the user from firebase cloud
-export const retrieveVideos = async (uid) => {
+export const retrieveVideos = async (uid, setFunc) => {
     const listRef = ref(storage, `${uid}/`);
     const videos = [];
+
     try {
         const list = await listAll(listRef);
-        list.prefixes.forEach((folderRef) => {
+
+        // Using map to create an array of promises for each folder
+        const folderPromises = list.prefixes.map(async (folderRef) => {
             const videoPair = [];
-            listAll(folderRef).then((res) => {
-                res.items.forEach(async (itemRef) => {
-                    // create http link for the video from itemRef.fullPath
-                    const url = await getDownloadURL(ref(storage, itemRef.fullPath));
-                    videoPair.push(url);
-                });
-            });
+            const res = await listAll(folderRef);
+            await Promise.all(res.items.map(async (itemRef) => {
+                const url = await getDownloadURL(ref(storage, itemRef.fullPath));
+                videoPair.push(url);
+            }));
             videos.push(videoPair);
         });
+
+        // Wait for all promises to resolve
+        await Promise.all(folderPromises);
+
         return videos;
     } catch (error) {
         return [];
     }
 }
+
 
 // download video file from firebase storage

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import './ThumbnailVertical.css'; // Import CSS file for styling
 import { AppContext } from '../../AppContext';
 import { useNavigate } from 'react-router-dom';
@@ -35,11 +35,8 @@ function ThumbnailVertical() {
   const { user } = useContext(AppContext);
   const navigate = useNavigate();
 
-  const [videoData, setVideoData] = [
-    { id: 1, videoTitle: "Video 1", videoStatus: "Uploaded" },
-    { id: 2, videoTitle: "Video 2", videoStatus: "Processing" },
-    { id: 3, videoTitle: "Video 3", videoStatus: "Uploaded" },
-  ];
+  const [videoData, setVideoData] = useState([
+  ]);
 
 
   useEffect(() => {
@@ -50,26 +47,32 @@ function ThumbnailVertical() {
     retrieveVideos(user.uid).then((response) => {
       // filter out only the interpolated videos in the response
       const videos = [];
+      const videoData = [];
       response.forEach((videoPair) => {
         videoPair.forEach((video) => {
-          if (video.toString().includes("interpolated")) {
-            videos.push(video);
+          if (!video.toString().includes("interpolated")) {
             console.log(video);
+            videos.push(video);
           }
-        }
-        );
-        videos.forEach((video, index) => {
-          setVideoData([...videoData, { id: index, videoTitle: `Video ${index + 1}`, videoStatus: "Processed", videoURL: video }]);
         });
       });
+      videos.forEach((video) => {
+        const videoTitle = "Video";
+        videoData.push({
+          videoTitle: videoTitle,
+          videoStatus: "Done",
+          videoURL: video,
+        });
+      });
+      setVideoData(videoData);
     });
   }, [user]);
 
   return (
     <div className="vertical-card-app-TV">
       <h1 className="vertical-card-app-title-TV">Video Upload Status</h1>
-      {videoData.map(video => (
-        <VerticalCard key={video.id} videoTitle={video.videoTitle} videoStatus={video.videoStatus} />
+      {videoData.map((video, index) => (
+        <VerticalCard key={index} videoTitle={`${video.videoTitle} ${index + 1}`} videoStatus={video.videoStatus} videoURL={video.videoURL} />
       ))}
     </div>
   );

@@ -26,7 +26,7 @@ const Navbar = () => {
         <ul className="nav-links-ul">
           <li><a href="">HOME</a></li>
           <li><Link to='aboutus'>ABOUT US</Link></li>
-          <li><Link to='verticalcard'>INSTRUCTIONS</Link></li>
+          <li><Link to='thumbnail'>YOUR VIDEOS</Link></li>
           {(user) ? <li onClick={handleSignOut} >LOG OUT</li> : <li><Link to='login'>SIGN IN</Link></li>}
         </ul>
       </div>
