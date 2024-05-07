@@ -161,4 +161,51 @@ export const retrieveVideos = async (uid, setFunc) => {
 }
 
 
-// download video file from firebase storage
+// // download video file from firebase storage
+// export const handleDownloadVideo = (video_link) => {
+//     // Replace 'video.mp4' with the actual video file URL
+//     const link = document.createElement('a');
+//     link.style.display = 'none';
+
+//     // Set the href attribute to the video URL
+//     link.href = video_link;
+
+//     // Set the download attribute and filename
+//     link.setAttribute('download', 'video.mp4');
+
+//     // Add the anchor element to the document body
+//     document.body.appendChild(link);
+
+//     // Trigger a click event on the anchor element
+//     link.click();
+
+//     // Clean up
+//     document.body.removeChild(link);
+// };
+
+export const handleDownloadVideo = async (video_link) => {
+    try {
+        // Fetch the video file, enable cors in firebase storage
+        const response = await fetch(video_link);
+        const blob = await response.blob();
+
+        // Create a Blob URL for the video blob
+        const blobUrl = window.URL.createObjectURL(blob);
+
+        // Create a temporary anchor element
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.setAttribute('download', 'video.mp4');
+        document.body.appendChild(link);
+        // Programmatically click the anchor to trigger download
+        link.click();
+
+        // Cleanup: Remove the anchor and revoke the blob URL
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl);
+        successToast("Video downloaded!");
+    } catch (error) {
+        errorToast("Failed to download video");
+        console.error('Error downloading video:', error);
+    }
+};

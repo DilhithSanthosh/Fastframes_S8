@@ -1,19 +1,31 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './NewDownloadPage.css';
+import { useContext } from 'react';
+import { AppContext } from '../../AppContext';
+import { handleDownloadVideo } from '../../Firebase/functions';
 
 const NewDownloadPage = () => {
   const videoRef = useRef(null);
   const [videoSrc, setVideoSrc] = useState(null);
   const [videoUID, setVideoUID] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useContext(AppContext);
 
+  // size of blob
   useEffect(() => {
-    // get the video UID from location state
+    if (!user) {
+      navigate('/login');
+    }
     if (location.state) {
-      setVideoUID(location.state.videoUID);
+      setVideoSrc(location.state.videoURL);
+      videoRef.current.src = location.state.videoURL;
+    } else {
+      console.log("No video found");
     }
   }, []);
+
 
   const handleStartVideo = () => {
     if (videoRef.current) {
@@ -28,15 +40,7 @@ const NewDownloadPage = () => {
     }
   };
 
-  const handleDownloadVideo = () => {
-    // Replace 'video.mp4' with the actual video file URL
-    const a = document.createElement('a');
-    a.href = videoSrc;
-    a.download = 'final_video.mp4';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
+
 
   const handleCompareVideo = () => {
     // Redirect to another webpage
@@ -56,8 +60,7 @@ const NewDownloadPage = () => {
       </div>
       <div className="button-container-DownloadPage">
         <button className="compare-btn-DownloadPage" onClick={handleStartVideo}>Start Video</button>
-        <button className="compare-btn-DownloadPage" onClick={handleDownloadVideo}>Download</button>
-        <button className="compare-btn-DownloadPage" onClick={handleCompareVideo}>Compare</button>
+        <button className="compare-btn-DownloadPage" onClick={() => handleDownloadVideo(videoRef.current.src)}>Download</button>
         <button className="compare-btn-DownloadPage" onClick={handleResetVideo}>Reset Video</button>
       </div>
     </div>

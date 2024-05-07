@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './LoginSignup.css'
 import { validateEmail } from '../../Firebase/functions'
@@ -9,6 +9,8 @@ import password_icon from '../../assets/password.png'
 import { signUp, authenticate } from '../../Firebase/functions'
 import { ToastContainer } from 'react-toastify'
 import { successToast, errorToast } from '../../Firebase/functions'
+import { AppContext } from '../../AppContext'
+import { useContext } from 'react'
 
 const LoginSignup = () => {
 
@@ -18,6 +20,7 @@ const LoginSignup = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
+    const { user } = useContext(AppContext);
 
     const sanitize = (input) => {
         // Check if input is null or undefined
@@ -86,6 +89,15 @@ const LoginSignup = () => {
                 errorToast(error.message);
             });
     };
+
+    useEffect(() => {
+        // check if user is already logged in
+        if (user) {
+            navigate('/');
+        }
+    }
+        , [user]);
+
 
     return (
         <div className='container-login-signup'>

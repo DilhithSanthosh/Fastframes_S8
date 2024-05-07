@@ -2,15 +2,17 @@ import React, { useState, useContext, useEffect } from 'react';
 import './ThumbnailVertical.css'; // Import CSS file for styling
 import { AppContext } from '../../AppContext';
 import { useNavigate } from 'react-router-dom';
-import { retrieveVideos } from '../../Firebase/functions';
+import { handleDownloadVideo, retrieveVideos } from '../../Firebase/functions';
 
 import logo from '../../assets/FF_NEW1.png'
 import { Link } from 'react-router-dom'
 
 const VerticalCard = ({ videoTitle, videoStatus, videoURL }) => {
+  const navigate = useNavigate();
+
   const playVideo = () => {
     // Add logic here to play the video
-    alert(`Playing ${videoTitle}`);
+    navigate('/downloadpage', { state: { videoURL: videoURL } });
   };
 
   return (
@@ -26,8 +28,8 @@ const VerticalCard = ({ videoTitle, videoStatus, videoURL }) => {
       </div>
       <p className={`status-verticalcard-TV ${videoStatus.toLowerCase()}`}>{videoStatus}</p>
       <button className="play-btn-verticalcard-TV" onClick={playVideo}>Play</button>
-      <button className="download-btn-verticalcard-TV">Compare</button>
-      <button className="download-btn-verticalcard-TV">Download</button>
+      {/* <button className="download-btn-verticalcard-TV">Compare</button> */}
+      <button className="download-btn-verticalcard-TV" onClick={() => { handleDownloadVideo(videoURL) }}>Download</button>
     </div>
   );
 };
@@ -62,7 +64,6 @@ function ThumbnailVertical() {
       response.forEach((videoPair) => {
         videoPair.forEach((video) => {
           if (video.toString().includes("interpolated")) {
-            console.log(video);
             videos.push(video);
           }
         });
