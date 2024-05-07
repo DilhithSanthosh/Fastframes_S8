@@ -28,6 +28,11 @@ const VerticalCard = ({ videoTitle, videoStatus, videoURL }) => {
   );
 };
 
+const loadingScreen = () => {
+  return <div>
+    <h1>Loading...</h1>
+  </div>
+}
 // Vertical Card App component
 function ThumbnailVertical() {
   // Sample data of video objects
@@ -50,7 +55,7 @@ function ThumbnailVertical() {
       const videoData = [];
       response.forEach((videoPair) => {
         videoPair.forEach((video) => {
-          if (!video.toString().includes("interpolated")) {
+          if (video.toString().includes("interpolated")) {
             console.log(video);
             videos.push(video);
           }
@@ -71,7 +76,7 @@ function ThumbnailVertical() {
   return (
     <div className="vertical-card-app-TV">
       <h1 className="vertical-card-app-title-TV">Video Upload Status</h1>
-      {videoData.map((video, index) => (
+      {(videoData.length == 0) ? loadingScreen() : videoData.map((video, index) => (
         <VerticalCard key={index} videoTitle={`${video.videoTitle} ${index + 1}`} videoStatus={video.videoStatus} videoURL={video.videoURL} />
       ))}
     </div>
