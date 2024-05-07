@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './VerticalCardApp.css'; // Import CSS file for styling
-
+import { AppContext } from '../../AppContext';
+import { useNavigate } from 'react-router-dom';
+import { retrieveVideos } from '../../Firebase/functions';
 // Video component
 const VerticalCard = ({ videoTitle, videoStatus }) => {
+
   const playVideo = () => {
     // Add logic here to play the video
     alert(`Playing ${videoTitle}`);
   };
+
 
   return (
     <div className="vertical-card">
@@ -20,12 +24,38 @@ const VerticalCard = ({ videoTitle, videoStatus }) => {
 
 // Vertical Card App component
 function VerticalCardApp() {
+
+
+  const { user } = useContext(AppContext);
+  const navigate = useNavigate();
+
   // Sample data of video objects
-  const videoData = [
-    { id: 1, videoTitle: "Video 1", videoStatus: "Uploaded" },
-    { id: 2, videoTitle: "Video 2", videoStatus: "Processing" },
-    { id: 3, videoTitle: "Video 3", videoStatus: "Uploaded" },
-  ];
+  const [videoData, setVideoData] = useState([
+    { id: 1, videoTitle: "Video 1", videoStatus: "Uploaded", videoURL: "https://www.youtube.com/watch?v=6n3pFFPSlW4" },
+  ]);
+
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+    }
+    console.log("videos")
+    retrieveVideos(user.uid).then((response) => {
+      // filter out only the interpolated videos in the response
+      const videos = [];
+      response.forEach((videoPair) => {
+        videoPair.forEach((video) => {
+          if (video.toString().includes("interpolated")) {
+            videos.push(video);
+          }
+        }
+        );
+        videos.forEach((video, index) => {
+          setVideoData([...videoData, { id: index, videoTitle: `Video ${index + 1}`, videoStatus: "Processed" }]);
+        });
+      });
+    });
+  }, [user]);
 
   return (
     <div className="vertical-card-app">

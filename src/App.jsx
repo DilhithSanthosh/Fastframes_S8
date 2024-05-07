@@ -19,7 +19,6 @@ import ThumbnailVertical from './Components/ThumbnailVertical/ThumbnailVertical'
 const App = () => {
 
   const [user, setUser] = useState(null);
-
   useEffect(() => {
     // check if the user is already logged in
     checkAuthState(setUser);
@@ -37,8 +36,8 @@ const App = () => {
             <Route path='/compare' element={<ComparisonPage />}></Route>
             <Route path='/downloadpage' element={<NewDownloadPage />}></Route>
             <Route path='/aboutus' element={<AboutUs />}></Route>
-        <Route path='/verticalcard' element={<VerticalCardApp/>}></Route>
-        <Route path='/thumbnail' element={<ThumbnailVertical/>}></Route>
+            <Route path='/verticalcard' element={<VerticalCardApp />}></Route>
+            <Route path='/thumbnail' element={<ThumbnailVertical />}></Route>
           </Routes>
 
         </Router>

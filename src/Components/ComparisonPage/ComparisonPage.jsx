@@ -14,6 +14,7 @@ const ComparisonPage = () => {
 
   const [video1, setVideo1] = useState(null);
   const [video2, setVideo2] = useState(null);
+  const [videoUID, setVideoUID] = useState(null);
   const { user } = useContext(AppContext);
 
   useEffect(() => {
@@ -25,6 +26,7 @@ const ComparisonPage = () => {
       console.log(location.state);
       video1Ref.current.src = location.state.originalURL;
       video2Ref.current.src = location.state.interpolatedURL;
+      setVideoUID(location.state.videoUID);
     }
 
   }, [user]);
@@ -44,6 +46,12 @@ const ComparisonPage = () => {
       video2Ref.current.pause();
       video2Ref.current.currentTime = 0;
     }
+  };
+
+
+  const handleDownload = () => {
+    // move to download page
+    navigate('/downloadpage', { state: { videoUID: videoUID } });
   };
 
 
@@ -77,10 +85,6 @@ const ComparisonPage = () => {
   );
 };
 
-const handleDownload = () => {
-  // Implement download functionality here
-  alert('Downloading videos...');
-};
 
 export default ComparisonPage;
 

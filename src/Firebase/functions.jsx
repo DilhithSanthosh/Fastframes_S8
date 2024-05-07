@@ -1,8 +1,9 @@
-import { auth, db } from './firebase';
+import { auth, db, storage } from './firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import { addDoc, getDoc, collection } from 'firebase/firestore';
 import { User, setUserData } from '../Models/User';
+import { ref, listAll, getDownloadURL } from 'firebase/storage';
 
 // check authentication state
 export const checkAuthState = (setUser) => {
@@ -130,3 +131,28 @@ export const generateVerificationToken = async (email) => {
         });
     });
 }
+
+// retrieve videos of the user from firebase cloud
+export const retrieveVideos = async (uid) => {
+    const listRef = ref(storage, `${uid}/`);
+    const videos = [];
+    try {
+        const list = await listAll(listRef);
+        list.prefixes.forEach((folderRef) => {
+            const videoPair = [];
+            listAll(folderRef).then((res) => {
+                res.items.forEach(async (itemRef) => {
+                    // create http link for the video from itemRef.fullPath
+                    const url = await getDownloadURL(ref(storage, itemRef.fullPath));
+                    videoPair.push(url);
+                });
+            });
+            videos.push(videoPair);
+        });
+        return videos;
+    } catch (error) {
+        return [];
+    }
+}
+
+// download video file from firebase storage

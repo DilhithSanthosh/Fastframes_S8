@@ -1,33 +1,18 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import './NewDownloadPage.css';
 
 const NewDownloadPage = () => {
   const videoRef = useRef(null);
   const [videoSrc, setVideoSrc] = useState(null);
+  const [videoUID, setVideoUID] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
-    const fetchVideo = async () => {
-      try {
-        const response = await fetch("http://localhost:8000/test");
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const blob = await response.blob();
-        const videoUrl = URL.createObjectURL(blob);
-        setVideoSrc(videoUrl);
-      } catch (error) {
-        console.error("There was a problem fetching the video:", error);
-      }
-    };
-
-    fetchVideo();
-
-    return () => {
-      // Revoke the object URL when the component is unmounted
-      if (videoSrc) {
-        URL.revokeObjectURL(videoSrc);
-      }
-    };
+    // get the video UID from location state
+    if (location.state) {
+      setVideoUID(location.state.videoUID);
+    }
   }, []);
 
   const handleStartVideo = () => {

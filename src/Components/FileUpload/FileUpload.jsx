@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./FileUpload.css";
 import axios from "axios";
 import clapperboard_icon from '../../assets/clapperboard1.png';
 import { generateVerificationToken, successToast, errorToast } from "../../Firebase/functions";
+import { AppContext } from "../../AppContext";
 
 const FileUpload = () => {
   const inputRef = useRef();
@@ -16,6 +17,10 @@ const FileUpload = () => {
   const [uploadStatus, setUploadStatus] = useState("select");
   const [originalURL, setOriginalURL] = useState("");
   const [interpolatedURL, setInterpolatedURL] = useState("");
+  const [videoUID, setVideoUID] = useState(null);
+  const { user } = useContext(AppContext);
+
+  const [interpolationFactor, setInterpolationFactor] = useState(2);
 
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -37,7 +42,7 @@ const FileUpload = () => {
   const handleUpload = async () => {
     if (uploadStatus === "done") {
       clearFileInput();
-      navigate('/compare', { state: { originalURL: originalURL, interpolatedURL: originalURL } });
+      navigate('/compare', { state: { originalURL: originalURL, interpolatedURL: interpolatedURL, videoUID: videoUID } });
       return;
     }
 
@@ -69,6 +74,7 @@ const FileUpload = () => {
             responseType: 'application/json',
             headers: {
               "Content-Type": "multipart/form-data",
+              "interpolationFactor": interpolationFactor,
               "Authorization": `${token}`,
             },
             onUploadProgress: (progressEvent) => {
@@ -92,6 +98,7 @@ const FileUpload = () => {
         const { original_video_url, interpolated_video_url } = response.data;
         setOriginalURL(original_video_url);
         setInterpolatedURL(interpolated_video_url);
+        setVideoUID(response.data.video_id);
       } catch (error) {
         errorToast("Failed to get video URLs");
         setUploadStatus("select");
@@ -106,74 +113,80 @@ const FileUpload = () => {
     }
   };
 
+  useEffect(() => {
+    if (!user
+    ) {
+      navigate('/login');
+    }
+  }, [user]);
+
 
   return (
     <>
-    <div className="fileupload">
-      <input
-        ref={inputRef}
-        type="file"
-        onChange={handleFileChange}
-        style={{ display: "none" }}
-      />
+      <div className="fileupload">
+        <input
+          ref={inputRef}
+          type="file"
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+        />
 
-      {/* Button to trigger the file input dialog */}
-      {!selectedFile && (
-        <button className="file-btn" onClick={onChooseFile}>
-          <img src={clapperboard_icon} alt="" />
-          <span className="material-symbols-outlined">upload</span> Upload File
-        </button>
-      )}
-
-      {selectedFile && (
-        <>
-          <div className="file-card">
-            <span className="material-symbols-outlined icon">description</span>
-
-            <div className="file-info">
-              <div style={{ flex: 1 }}>
-                <h6 className="fileupload-dil-text">{selectedFile?.name}</h6>
-
-                <div className="progress-bg">
-                  <div className="progress" style={{ width: `${progress}%` }} />
-                </div>
-              </div>
-
-              {uploadStatus === "select" ? (
-                <button onClick={clearFileInput}>
-                  <span className="material-symbols-outlined close-icon">
-                    close
-                  </span>
-                </button>
-              ) : (
-                <div className="check-circle">
-                  {uploadStatus === "uploading" ? (
-                    `${progress}%`
-                  ) : uploadStatus === "done" ? (
-                    <span
-                      className="material-symbols-outlined"
-                      style={{ fontSize: "20px" }}
-                    >
-                      check
-                    </span>
-                  ) : null}
-                </div>
-              )}
-            </div>
-          </div>
-          <button className="upload-btn" onClick={handleUpload}>
-            {uploadStatus === "select" || uploadStatus === 'uploading' ? "Upload" : "Done"}
+        {/* Button to trigger the file input dialog */}
+        {!selectedFile && (
+          <button className="file-btn" onClick={onChooseFile}>
+            <img src={clapperboard_icon} alt="" />
+            <span className="material-symbols-outlined">upload</span> Upload File
           </button>
-        </>
-      )}
-    
-    </div>
-    <div className="file-dil">
+        )}
 
-      <button className="file-dilbutton">2x</button>
-      <button className="file-dilbutton">3x</button>
-      <button className="file-dilbutton">4x</button>
-    </div>
+        {selectedFile && (
+          <>
+            <div className="file-card">
+              <span className="material-symbols-outlined icon">description</span>
+
+              <div className="file-info">
+                <div style={{ flex: 1 }}>
+                  <h6 className="fileupload-dil-text">{selectedFile?.name}</h6>
+
+                  <div className="progress-bg">
+                    <div className="progress" style={{ width: `${progress}%` }} />
+                  </div>
+                </div>
+
+                {uploadStatus === "select" ? (
+                  <button onClick={clearFileInput}>
+                    <span className="material-symbols-outlined close-icon">
+                      close
+                    </span>
+                  </button>
+                ) : (
+                  <div className="check-circle">
+                    {uploadStatus === "uploading" ? (
+                      `${progress}%`
+                    ) : uploadStatus === "done" ? (
+                      <span
+                        className="material-symbols-outlined"
+                        style={{ fontSize: "20px" }}
+                      >
+                        check
+                      </span>
+                    ) : null}
+                  </div>
+                )}
+              </div>
+            </div>
+            <button className="upload-btn" onClick={handleUpload}>
+              {uploadStatus === "select" || uploadStatus === 'uploading' ? "Upload" : "Done"}
+            </button>
+          </>
+        )}
+
+      </div>
+      <div className="file-dil">
+        <button className={interpolationFactor === 2 ? "file-dilbutton-active file-dilbutton" : "file-dilbutton"} onClick={() => setInterpolationFactor(2)}>2x</button>
+        <button className={interpolationFactor === 3 ? "file-dilbutton-active file-dilbutton" : "file-dilbutton"} onClick={() => setInterpolationFactor(3)}>3x</button>
+        <button className={interpolationFactor === 4 ? "file-dilbutton-active file-dilbutton" : "file-dilbutton"} onClick={() => setInterpolationFactor(4)}>4x</button>
+      </div>
     </>
   );
 };
