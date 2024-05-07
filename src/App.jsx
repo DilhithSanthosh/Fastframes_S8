@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import AboutUs from './Components/AboutUs/AboutUs'
 import VerticalCardApp from './Components/VerticalCardApp/VerticalCardApp'
+import ThumbnailVertical from './Components/ThumbnailVertical/ThumbnailVertical'
 
 const App = () => {
 
@@ -37,7 +38,7 @@ const App = () => {
             <Route path='/downloadpage' element={<NewDownloadPage />}></Route>
             <Route path='/aboutus' element={<AboutUs />}></Route>
         <Route path='/verticalcard' element={<VerticalCardApp/>}></Route>
-
+        <Route path='/thumbnail' element={<ThumbnailVertical/>}></Route>
           </Routes>
 
         </Router>
