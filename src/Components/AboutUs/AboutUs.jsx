@@ -1,9 +1,13 @@
 import React from 'react';
 import './AboutUs.css';
 
+import logo from '../../assets/FF_NEW1.png'
+import { Link } from 'react-router-dom'
+
 function AboutUs() {
   return (
     <div className="containerAboutUs">
+        <Link to='/'><img className="fastframe-home-aboutus" src={logo} alt="fastframeslogo" /></Link>
       <h1 className="headingAboutUs">Fast Frames: Enhancing Video Quality</h1>
       <p className="textAboutUs">
         In a world driven by the visual power of videos, the quality of what we see holds paramount importance. However, we've all encountered videos that, due to low frame rates, exhibit jarring motion and less-than-optimal viewing experiences. Fast Frames is the answer to this challenge. It's a groundbreaking project that harnesses the capabilities of deep learning to transform the way we perceive and enjoy video content. Our mission is clear: not only to enhance frame rates but to elevate the overall quality of videos, reduce motion judder, and minimize interpolation artifacts.
