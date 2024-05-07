@@ -1,4 +1,4 @@
-import React, { useRef, useState} from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./FileUpload.css";
 import axios from "axios";
@@ -35,7 +35,7 @@ const FileUpload = () => {
   const handleUpload = async () => {
     if (uploadStatus === "done") {
       clearFileInput();
-      navigate('/downloadpage', {state: {videoBlob : blob}});
+      navigate('/downloadpage', { state: { videoBlob: blob } });
       return;
     }
 
@@ -61,11 +61,11 @@ const FileUpload = () => {
           },
         }
       );
-      
+
       console.log("getting video");
 
       setBlob(response.data);
-      
+
       console.log("done");
       setUploadStatus("done");
     } catch (error) {
