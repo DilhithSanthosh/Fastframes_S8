@@ -75,6 +75,7 @@ const FileUpload = () => {
   };
 
   return (
+    <>
     <div className="fileupload">
       <input
         ref={inputRef}
@@ -98,7 +99,7 @@ const FileUpload = () => {
 
             <div className="file-info">
               <div style={{ flex: 1 }}>
-                <h6>{selectedFile?.name}</h6>
+                <h6 className="fileupload-dil-text">{selectedFile?.name}</h6>
 
                 <div className="progress-bg">
                   <div className="progress" style={{ width: `${progress}%` }} />
@@ -107,7 +108,7 @@ const FileUpload = () => {
 
               {uploadStatus === "select" ? (
                 <button onClick={clearFileInput}>
-                  <span class="material-symbols-outlined close-icon">
+                  <span className="material-symbols-outlined close-icon">
                     close
                   </span>
                 </button>
@@ -117,7 +118,7 @@ const FileUpload = () => {
                     `${progress}%`
                   ) : uploadStatus === "done" ? (
                     <span
-                      class="material-symbols-outlined"
+                      className="material-symbols-outlined"
                       style={{ fontSize: "20px" }}
                     >
                       check
@@ -132,7 +133,15 @@ const FileUpload = () => {
           </button>
         </>
       )}
+    
     </div>
+    <div className="file-dil">
+
+      <button className="file-dilbutton">2x</button>
+      <button className="file-dilbutton">3x</button>
+      <button className="file-dilbutton">4x</button>
+    </div>
+    </>
   );
 };
 
