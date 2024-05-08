@@ -4,6 +4,7 @@ import './ComparisonPage.css';
 import { useRef, useState, useContext, } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AppContext } from '../../AppContext';
+import { handleDownloadVideo } from '../../Firebase/functions';
 
 
 // home button element import statements
@@ -56,7 +57,7 @@ const ComparisonPage = () => {
 
   const handleDownload = () => {
     // move to download page
-    navigate('/downloadpage', { state: { videoUID: videoUID } });
+    handleDownloadVideo(video2Ref.current.src);
   };
 
 
