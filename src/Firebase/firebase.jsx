@@ -10,6 +10,7 @@ import { getStorage } from "firebase/storage";
 const firebaseConfig = {
 };
 
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
